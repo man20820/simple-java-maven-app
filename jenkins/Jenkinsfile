@@ -1,7 +1,7 @@
 node {
     checkout scm
     withCredentials([
-        string(credentialsId: 'root', variable: 'secret')
+        sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
     ]) {
         echo "rahasia nya adalah '${secret}'"
     }
