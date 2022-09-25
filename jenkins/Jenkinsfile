@@ -1,5 +1,10 @@
 node {
     checkout scm
+    withCredentials([
+        string(credentialsId: 'root', variable: 'secret')
+    ]) {
+        echo "rahasia nya adalah '${secret}'"
+    }
     docker.image('maven:3.5.4-alpine').inside('-v /root/.m2:/root/.m2') {
         stage('Build') {
             sh 'mvn -B -DskipTests clean package'
@@ -7,7 +12,7 @@ node {
         stage('Test') {
             sh 'mvn test'
         }
-        stage('Deliver') {
+        stage('Deploy') {
             sh './jenkins/scripts/deliver.sh'
         }
     }
