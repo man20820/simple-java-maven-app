@@ -12,7 +12,7 @@ node {
             withCredentials([
                     sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
                 ]) {
-                    rsync -avz -e "${secret}" target/my-app-1.0-SNAPSHOT.jar ubuntu@$tkjpedia:/root/workspace/dicoding/
+                    rsync -avz -e "'${secret}'" target/my-app-1.0-SNAPSHOT.jar ubuntu@$tkjpedia:/root/workspace/dicoding/
                 }
         }
     }
