@@ -12,7 +12,7 @@ node {
             withCredentials([
                     sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
                 ]) {
-                    ls -al
+                    sh 'ls -al'
                 }
         }
     }
