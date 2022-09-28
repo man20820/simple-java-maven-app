@@ -11,14 +11,16 @@ node {
             sh './jenkins/scripts/deliver.sh'
         }
     }
-    stage('Deploy') {
-        withCredentials([
-                sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
-            ]) {
-                sh "echo ${secret} | tr -d '\r' | ssh-add -"
-                sh "mkdir -p ~/.ssh"
-                sh "chmod 700 ~/.ssh"
-                sh "scp -i id_rsa -o StrictHostKeyChecking=no target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp"
-            }
-    } 
+    docker.image('instrumentisto/rsync-ssh').inside('-v $PWD:/volume') {
+        stage('Deploy') {
+            withCredentials([
+                    sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
+                ]) {
+                    sh "echo ${secret} | tr -d '\r' | ssh-add -"
+                    sh "mkdir -p ~/.ssh"
+                    sh "chmod 700 ~/.ssh"
+                    sh "scp -i id_rsa -o StrictHostKeyChecking=no /volume/target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp"
+                }
+        } 
+    }
 }
