@@ -15,9 +15,9 @@ node {
         withCredentials([
                 sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
             ]) {
-                sh "touch id_rsa"
-                sh "chmod 400 id_rsa"
-                sh "echo ${secret} >> id_rsa"
+                sh "echo ${secret} | tr -d '\r' | ssh-add -"
+                sh "mkdir -p ~/.ssh"
+                sh "chmod 700 ~/.ssh"
                 sh "scp -i id_rsa -o StrictHostKeyChecking=no target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp"
             }
     } 
