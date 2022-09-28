@@ -7,13 +7,15 @@ node {
         stage('Test') {
             sh 'mvn test'
         }
-        stage('Deploy') {
+        stage('Deliver') {
             sh './jenkins/scripts/deliver.sh'
-            withCredentials([
-                    sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
-                ]) {
-                    sh "scp -i ${secret} -o StrictHostKeyChecking=no target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp"
-                }
         }
     }
+    stage('Deploy') {
+        withCredentials([
+                sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
+            ]) {
+                sh "scp -i ${secret} -o StrictHostKeyChecking=no target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp"
+            }
+    } 
 }
