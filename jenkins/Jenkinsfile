@@ -12,8 +12,8 @@ node {
             withCredentials([
                     sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
                 ]) {
-                    sh "sudo apk update"
-                    sh "sudo apk add rsync"
+                    sh "apk update"
+                    sh "apk add rsync"
                     sh "rsync -avz -e 'ssh -i ${secret} -o StrictHostKeyChecking=no' target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp"
                 }
         }
