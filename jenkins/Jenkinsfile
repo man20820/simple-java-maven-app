@@ -16,20 +16,7 @@ node {
             input "Deploy to EC2?"
             sh 'ls -al'
             sh 'scp target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp/'
-            sh 'ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com "cd workspace/dicoding/tmp/ && ls -al"'
+            sh 'ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com "cd workspace/dicoding/tmp/ && ls -al && java -jar my-app-1.0-SNAPSHOT.jar"'
         }
     }
-    // docker.image('ubuntu:latest').inside('--user=root') {
-    //     stage('Deploy') {
-    //         sh "apt update -y && apt install openssh-client -y"
-    //         withCredentials([
-    //                 sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'key')
-    //             ]) {
-    //                 sh "echo '$key' | tr -d '\r' | ssh-add -"
-    //                 sh "mkdir -p ~/.ssh"
-    //                 sh "chmod 700 ~/.ssh"
-    //                 sh "ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com 'ls -al'"
-    //             }
-    //     } 
-    // }
 }
