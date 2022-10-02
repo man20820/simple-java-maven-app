@@ -13,14 +13,15 @@ node {
     // }
     docker.image('ubuntu:latest').inside('--user=root') {
         stage('Deploy') {
-            sh "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+            sh "apt update -y && apt install openssh-client -y"
+            sh "eval $(ssh-agent -s)"
             withCredentials([
                     sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'key')
                 ]) {
+                    sh "echo '$key' | tr -d '\r' | ssh-add -"
                     sh "mkdir -p ~/.ssh"
-                    sh "[[ -f /.dockerenv ]] && echo -e 'Host *\n\tStrictHostKeyChecking no\n\n' > ~/.ssh/config"
-                    sh "ssh-add <(echo '$key')"
-                    sh "ssh -o StrictHostKeyChecking=no $ubuntu@$key 'ls -al'"
+                    sh "chmod 700 ~/.ssh"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@$key 'ls -al'"
                 }
         } 
     }
