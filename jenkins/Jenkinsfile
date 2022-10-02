@@ -13,10 +13,10 @@ node {
     // }
     docker.image('ubuntu:latest').inside('-e TZ=Asia/Jakarta') {
         stage('Deploy') {
+            sh "'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'"
             withCredentials([
                     sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'key')
                 ]) {
-                    sh "'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'"
                     sh "mkdir -p ~/.ssh"
                     sh "[[ -f /.dockerenv ]] && echo -e 'Host *\n\tStrictHostKeyChecking no\n\n' > ~/.ssh/config"
                     sh "ssh-add <(echo '$key')"
