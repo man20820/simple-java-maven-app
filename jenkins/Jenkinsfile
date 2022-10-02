@@ -18,7 +18,6 @@ node {
                 ]) {
                     sh "'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'"
                     sh "mkdir -p ~/.ssh"
-                    sh "eval $(ssh-agent -s)"
                     sh "[[ -f /.dockerenv ]] && echo -e 'Host *\n\tStrictHostKeyChecking no\n\n' > ~/.ssh/config"
                     sh "ssh-add <(echo '$key')"
                     sh "ssh -o StrictHostKeyChecking=no $ubuntu@$key 'ls -al'"
