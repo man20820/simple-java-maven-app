@@ -12,7 +12,8 @@ node {
     //     }
     // }
     sshagent (credentials: ['root']) {
-        sh 'ssh -o StrictHostKeyChecking=no -l ubuntu tkjpedia.com uname -a'
+        cat private_key_*
+        // sh 'ssh -o StrictHostKeyChecking=no -l ubuntu tkjpedia.com uname -a'
     }
     // docker.image('ubuntu:latest').inside('--user=root') {
     //     stage('Deploy') {
