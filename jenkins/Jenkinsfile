@@ -11,7 +11,7 @@ node {
     //         sh './jenkins/scripts/deliver.sh'
     //     }
     // }
-    sshagent (credentials: ['ubuntu']) {
+    sshagent (credentials: ['ubuntu-text']) {
         sh "cat private_key_*"
         // sh 'ssh -o StrictHostKeyChecking=no -l ubuntu tkjpedia.com uname -a'
     }
