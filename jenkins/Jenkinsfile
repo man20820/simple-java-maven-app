@@ -11,17 +11,20 @@ node {
     //         sh './jenkins/scripts/deliver.sh'
     //     }
     // }
-    docker.image('ubuntu:latest').inside('--user=root') {
-        stage('Deploy') {
-            sh "apt update -y && apt install openssh-client -y"
-            withCredentials([
-                    sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'key')
-                ]) {
-                    sh "echo '$key' | tr -d '\r' | ssh-add -"
-                    sh "mkdir -p ~/.ssh"
-                    sh "chmod 700 ~/.ssh"
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com 'ls -al'"
-                }
-        } 
+    sshagent (credentials: ['root']) {
+        sh 'ssh -o StrictHostKeyChecking=no -l ubuntu tkjpedia.com uname -a'
     }
+    // docker.image('ubuntu:latest').inside('--user=root') {
+    //     stage('Deploy') {
+    //         sh "apt update -y && apt install openssh-client -y"
+    //         withCredentials([
+    //                 sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'key')
+    //             ]) {
+    //                 sh "echo '$key' | tr -d '\r' | ssh-add -"
+    //                 sh "mkdir -p ~/.ssh"
+    //                 sh "chmod 700 ~/.ssh"
+    //                 sh "ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com 'ls -al'"
+    //             }
+    //     } 
+    // }
 }
