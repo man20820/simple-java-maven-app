@@ -12,7 +12,9 @@ node {
     //     }
     // }
     sshagent (credentials: ['ubuntu2']) {
-        sh 'ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com "ls -al"'
+        sh 'ls -al'
+        sh 'scp target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp/'
+        sh 'ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com "cd workspace/dicoding/tmp/ && ls -al"'
     }
     // docker.image('ubuntu:latest').inside('--user=root') {
     //     stage('Deploy') {
