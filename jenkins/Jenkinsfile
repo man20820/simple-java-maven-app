@@ -11,15 +11,17 @@ node {
             sh './jenkins/scripts/deliver.sh'
         }
     }
-    docker.image('instrumentisto/rsync-ssh').inside('-v $PWD:/volume') {
+    docker.image('ubuntu:latest') {
         stage('Deploy') {
             withCredentials([
-                    sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'secret')
+                    sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'key')
                 ]) {
-                    sh "echo ${secret} | tr -d '\r' | ssh-add -"
+                    sh "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
                     sh "mkdir -p ~/.ssh"
-                    sh "chmod 700 ~/.ssh"
-                    sh "scp -i id_rsa -o StrictHostKeyChecking=no /volume/target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp"
+                    sh "eval $(ssh-agent -s)"
+                    sh "[[ -f /.dockerenv ]] && echo -e 'Host *\n\tStrictHostKeyChecking no\n\n' > ~/.ssh/config"
+                    sh "ssh-add <(echo '$key')"
+                    sh "ssh -o StrictHostKeyChecking=no $ubuntu@$key 'ls -al'"
                 }
         } 
     }
