@@ -11,7 +11,7 @@ node {
     //         sh './jenkins/scripts/deliver.sh'
     //     }
     // }
-    sshagent (credentials: ['ubuntu-text']) {
+    sshagent (credentials: ['ubuntu2']) {
         sh 'ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com uname -a'
     }
     // docker.image('ubuntu:latest').inside('--user=root') {
