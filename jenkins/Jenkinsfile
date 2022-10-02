@@ -11,7 +11,7 @@ node {
     //         sh './jenkins/scripts/deliver.sh'
     //     }
     // }
-    docker.image('ubuntu:latest') {
+    docker.image('ubuntu:latest').inside('-e TZ=Asia/Jakarta') {
         stage('Deploy') {
             sh "ls -al"
             // withCredentials([
