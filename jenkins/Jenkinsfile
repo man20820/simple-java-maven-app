@@ -12,7 +12,7 @@ node {
     //     }
     // }
     sshagent (credentials: ['root']) {
-        cat private_key_*
+        sh "cat private_key_*"
         // sh 'ssh -o StrictHostKeyChecking=no -l ubuntu tkjpedia.com uname -a'
     }
     // docker.image('ubuntu:latest').inside('--user=root') {
