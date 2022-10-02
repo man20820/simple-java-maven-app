@@ -14,7 +14,7 @@ node {
     docker.image('ubuntu:latest').inside('--user=root') {
         stage('Deploy') {
             sh "apt update -y && apt install openssh-client -y"
-            sh "eval $(ssh-agent -s)"
+            eval "$(ssh-agent -s)"
             withCredentials([
                     sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'key')
                 ]) {
