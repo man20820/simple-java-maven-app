@@ -7,14 +7,17 @@ node {
         stage('Test') {
             sh 'mvn test'
         }
-        stage('Deliver') {
+        stage('Deploy') {
             sh './jenkins/scripts/deliver.sh'
         }
     }
     sshagent (credentials: ['ubuntu2']) {
-        sh 'ls -al'
-        sh 'scp target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp/'
-        sh 'ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com "cd workspace/dicoding/tmp/ && ls -al"'
+        stage('Deploy to EC2') {
+            input "Deploy to EC2?"
+            sh 'ls -al'
+            sh 'scp target/my-app-1.0-SNAPSHOT.jar ubuntu@tkjpedia.com:workspace/dicoding/tmp/'
+            sh 'ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com "cd workspace/dicoding/tmp/ && ls -al"'
+        }
     }
     // docker.image('ubuntu:latest').inside('--user=root') {
     //     stage('Deploy') {
