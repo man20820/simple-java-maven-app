@@ -21,7 +21,7 @@ node {
                     sh "echo '$key' | tr -d '\r' | ssh-add -"
                     sh "mkdir -p ~/.ssh"
                     sh "chmod 700 ~/.ssh"
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@$key 'ls -al'"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@tkjpedia.com 'ls -al'"
                 }
         } 
     }
